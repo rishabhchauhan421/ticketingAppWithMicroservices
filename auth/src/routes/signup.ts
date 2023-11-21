@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import { RequestValidationError } from '../errors/request-validation-error';
-import { DatabaseConnectionError } from '../errors/database-connection-error';
+import { BadRequestError } from '../errors/bad-request-error';
+import { User } from '../models/user';
 const { body, validationResult } = require('express-validator');
 
 const router = express.Router();
@@ -14,7 +15,7 @@ router.get(
       .isLength({ min: 4, max: 20 })
       .withMessage('Password must be valid'),
   ],
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const errors = validationResult(req);
     console.log(errors);
     if (!errors.isEmpty()) {
@@ -22,9 +23,22 @@ router.get(
       throw new RequestValidationError(errors.errors);
       // return res.status(400).send(errors.array());
     }
-    console.log('Hi There!');
-    throw new DatabaseConnectionError();
-    return res.status(200).send('Signup Done');
+    const { email, password } = req.body;
+
+    const currentUser = await User.findOne({ email });
+    if (currentUser) {
+      console.log('Email in use');
+      throw new BadRequestError('User Already Exists');
+    }
+
+    const user = User.build({
+      email,
+      password,
+    });
+    await user.save();
+
+    // throw new DatabaseConnectionError();
+    return res.status(200).send(user);
   }
 );
 

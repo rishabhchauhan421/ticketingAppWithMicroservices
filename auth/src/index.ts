@@ -1,6 +1,8 @@
 import express from 'express';
 import { json } from 'body-parser';
+//to bypass custom errors handling with async
 import 'express-async-errors';
+import mongoose from 'mongoose';
 
 import { currentUser } from './routes/current-user';
 import { signinRouter } from './routes/signin';
@@ -9,6 +11,7 @@ import { signupRouter } from './routes/signup';
 
 import { errorHandler } from './middlewares/error-handler';
 import { NotFoundError } from './errors/not-found-error';
+import { DatabaseConnectionError } from './errors/database-connection-error';
 
 const app = express();
 app.use(json());
@@ -24,6 +27,17 @@ app.all('*', async () => {
 
 app.use(errorHandler);
 
-app.listen(3000, () => {
-  console.log('Listening on port 3000!');
-});
+const startup = async () => {
+  try {
+    await mongoose.connect('mongodb://auth-mongo-srv:27017/auth');
+    console.log('Connected to Auth MongoDB');
+  } catch (e) {
+    console.error(e);
+  }
+
+  app.listen(3000, () => {
+    console.log('Listening on port 3000!');
+  });
+};
+
+startup();
