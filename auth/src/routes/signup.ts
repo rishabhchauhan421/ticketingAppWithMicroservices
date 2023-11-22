@@ -20,7 +20,7 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    console.log('inside signup');
+    // console.log('inside signup');
 
     const { email, password } = req.body;
 
@@ -37,7 +37,7 @@ router.post(
 
     await user.save();
 
-    console.log('User is created');
+    // console.log('User is created');
     // console.log(process.env.JWT_KEY);
     //Adding JWT
     const userJwt = jwt.sign(
@@ -52,10 +52,10 @@ router.post(
       jwt: userJwt,
     };
 
-    console.log('JWT added to Cookie');
+    // console.log('JWT added to Cookie');
 
     // throw new DatabaseConnectionError();
-    return res.status(200).send(user);
+    return res.status(201).send(user);
   }
 );
 

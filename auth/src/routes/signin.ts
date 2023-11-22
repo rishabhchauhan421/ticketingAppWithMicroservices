@@ -19,13 +19,13 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    console.log('Inside Signin!');
+    // console.log('Inside Signin!');
 
     const { email, password } = req.body;
 
     const currentUser = await User.findOne({ email });
     if (!currentUser) {
-      console.log('Email not in use');
+      // console.log('Email not in use');
       throw new BadRequestError('User do not exists');
     }
 
@@ -33,7 +33,7 @@ router.post(
       currentUser.password,
       password
     );
-    console.log('Password is ' + isPasswordMatched);
+    // console.log('Password is ' + isPasswordMatched);
 
     if (isPasswordMatched) {
       const userJwt = jwt.sign(
