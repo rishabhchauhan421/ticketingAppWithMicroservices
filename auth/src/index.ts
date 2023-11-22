@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { app } from './app';
-import { BadRequestError } from './errors/bad-request-error';
+import { BadRequestError } from '@rishabhtickets/common';
 
 const startup = async () => {
   if (!process.env.JWT_KEY) {

@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
-import { RequestValidationError } from '../errors/request-validation-error';
-import { BadRequestError } from '../errors/bad-request-error';
+import { RequestValidationError } from '@rishabhtickets/common';
+import { BadRequestError } from '@rishabhtickets/common';
 import { User } from '../models/user';
 import jwt from 'jsonwebtoken';
-import { validateRequest } from '../middlewares/validate-request';
+import { validateRequest } from '@rishabhtickets/common';
 
 const { body, validationResult } = require('express-validator');
 

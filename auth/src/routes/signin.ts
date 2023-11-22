@@ -1,11 +1,11 @@
 import express, { Request, Response } from 'express';
 import { User } from '../models/user';
-import { BadRequestError } from '../errors/bad-request-error';
+import { BadRequestError } from '@rishabhtickets/common';
 import { Password } from '../services/password';
 import jwt from 'jsonwebtoken';
-import { RequestValidationError } from '../errors/request-validation-error';
+import { RequestValidationError } from '@rishabhtickets/common';
 import { body, validationResult } from 'express-validator';
-import { validateRequest } from '../middlewares/validate-request';
+import { validateRequest } from '@rishabhtickets/common';
 const router = express.Router();
 
 router.post(
