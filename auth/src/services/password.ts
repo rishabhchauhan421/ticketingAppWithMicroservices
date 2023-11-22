@@ -1,4 +1,4 @@
-import { scrypt, randomBytes } from 'crypto';
+import { scrypt, randomBytes, timingSafeEqual } from 'crypto';
 import { promisify } from 'util';
 
 const scryptAsync = promisify(scrypt);
@@ -20,6 +20,6 @@ export class Password {
       salt,
       64
     )) as Buffer;
-    return hashedPasswordBuf === suppliedPasswordBuf;
+    return timingSafeEqual(hashedPasswordBuf, suppliedPasswordBuf);
   }
 }
